@@ -1,0 +1,7 @@
+[Unit]
+Description=Check website %i
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/rpi-ops/.env-rpi-ops
+ExecStart=/usr/local/bin/checkweb.sh %i

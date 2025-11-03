@@ -1,0 +1,7 @@
+[Unit]
+Description=SMART disk scan
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/rpi-ops/.env-rpi-ops
+ExecStart=/usr/local/bin/drive_smart_scan.sh

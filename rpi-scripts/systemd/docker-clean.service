@@ -1,0 +1,6 @@
+[Unit]
+Description=Docker prune
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env bash -c '/usr/local/bin/docker_cleanup.sh'

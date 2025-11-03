@@ -1,0 +1,7 @@
+[Unit]
+Description=Docker compose watchdog
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/rpi-ops/.env-rpi-ops
+ExecStart=/usr/local/bin/docker_watchdog.sh

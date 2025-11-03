@@ -1,0 +1,7 @@
+[Unit]
+Description=RSYNC backup
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/rpi-ops/.env-rpi-ops
+ExecStart=/usr/local/bin/backup_rsync.sh

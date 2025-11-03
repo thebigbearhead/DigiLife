@@ -1,0 +1,6 @@
+[Unit]
+Description=RPi Health summary
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/rpi_health.sh

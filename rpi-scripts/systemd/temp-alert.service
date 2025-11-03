@@ -1,0 +1,7 @@
+[Unit]
+Description=RPi temperature alert
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/rpi-ops/.env-rpi-ops
+ExecStart=/usr/local/bin/temp_alert.sh

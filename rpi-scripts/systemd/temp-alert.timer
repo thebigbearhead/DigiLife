@@ -1,0 +1,10 @@
+[Unit]
+Description=Temp alert every 5 min
+
+[Timer]
+OnUnitActiveSec=5min
+OnBootSec=1m
+Persistent=true
+
+[Install]
+WantedBy=timers.target
