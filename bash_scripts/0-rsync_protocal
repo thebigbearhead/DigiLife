@@ -1,0 +1,45 @@
+typeset -Ag RSYNC_MAP=(
+  [raspibackup]='raspi@192.168.1.232:/home/raspi/backupd/'
+  # keep $HOME literal so it expands on the remote host instead of our local shell
+  [archbackup]='thebigbearhead@192.168.1.185:$HOME/backuparch/'
+)
+typeset -ag RSYNC_LAST_CMD=()
+
+rsyncf() {
+  emulate -L zsh
+  if (( $# < 2 )); then
+    echo "Usage:"
+    echo "  rsyncf <src1> [src2 ...] <dest>"
+    echo "  rsyncf <src1> [src2 ...] :<remote-key>"
+    return 1
+  fi
+
+  local dest last_arg="$argv[-1]"
+  local -a sources=("$@")
+  sources[-1]=()
+
+  if [[ $last_arg == :* ]]; then
+    local key="${last_arg#:}"
+    dest="${RSYNC_MAP[$key]}"
+    if [[ -z $dest ]]; then
+      echo "Error: remote key '$key' not found."
+      echo "Available keys: ${(@k)RSYNC_MAP}"
+      return 1
+    fi
+  else
+    dest="$last_arg"
+  fi
+
+  RSYNC_LAST_CMD=(rsync -aH --info=progress2 -e ssh "${sources[@]}" "$dest")
+  command "${RSYNC_LAST_CMD[@]}"
+}
+
+rsyncy() {
+  emulate -L zsh
+  if (( ${#RSYNC_LAST_CMD[@]} == 0 )); then
+    echo "rsyncy: no previous rsyncf command to replay."
+    return 1
+  fi
+  printf 'Replaying: %s\n' "${(j: :)${(q)RSYNC_LAST_CMD[@]}}"
+  command "${RSYNC_LAST_CMD[@]}"
+}
